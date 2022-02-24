@@ -1,0 +1,115 @@
+				process management
+
+1)  List out highest priority process in the system?
+
+[ec2-user@ip-172-31-30-89 ~]$ top
+top - 07:30:55 up 3 days,  2:54,  1 user,  load average: 0.00, 0.00, 0.00
+Tasks:  92 total,   1 running,  50 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem :   988684 total,   222784 free,   117588 used,   648312 buff/cache
+KiB Swap:        0 total,        0 free,        0 used.   712080 avail Mem
+
+  PID USER      PR  NI    VIRT    RES    SHR S %CPU %MEM     TIME+ COMMAND
+    1 root      20   0  125736   5652   3964 S  0.0  0.6   0:18.84 systemd
+    2 root      20   0       0      0      0 S  0.0  0.0   0:00.01 kthreadd
+    3 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 rcu_gp
+    4 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 rcu_par_gp
+    6 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 kworker/0:0H-ev
+    9 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 mm_percpu_wq
+   10 root      20   0       0      0      0 S  0.0  0.0   0:00.00 rcu_tasks_rude_
+   11 root      20   0       0      0      0 S  0.0  0.0   0:00.00 rcu_tasks_trace
+   12 root      20   0       0      0      0 S  0.0  0.0   0:00.59 ksoftirqd/0
+   13 root      20   0       0      0      0 I  0.0  0.0   0:01.50 rcu_sched
+   14 root      rt   0       0      0      0 S  0.0  0.0   0:01.25 migration/0
+   15 root      20   0       0      0      0 S  0.0  0.0   0:00.00 cpuhp/0
+   17 root      20   0       0      0      0 S  0.0  0.0   0:00.00 kdevtmpfs
+   18 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 netns
+   21 root      20   0       0      0      0 S  0.0  0.0   0:00.33 kauditd
+  261 root      20   0       0      0      0 S  0.0  0.0   0:00.06 khungtaskd
+  262 root      20   0       0      0      0 S  0.0  0.0   0:00.00 oom_reaper
+  263 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 writeback
+  265 root      20   0       0      0      0 S  0.0  0.0   0:07.85 kcompactd0
+  266 root      25   5       0      0      0 S  0.0  0.0   0:00.00 ksmd
+  267 root      39  19       0      0      0 S  0.0  0.0   0:00.00 khugepaged
+  322 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 kintegrityd
+  324 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 kblockd
+  325 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 blkcg_punt_bio
+  676 root      20   0       0      0      0 S  0.0  0.0   0:00.00 xen-balloon
+
+
+2) Open terminal with 2 tabs or sessions
+    a)  run command "vmstat 1"
+
+[ec2-user@ip-172-31-30-89 ~]$ vmstat
+procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+ 0  0      0 222792   1060 647252    0    0     1     7   22   43  0  0 100  0  0
+
+
+ b) switch to another tab,  pause  running vmstat command for few seconds and resume it again
+
+use appropriate SIGNALS to do this activity.
+
+
+
+[ec2-user@ip-172-31-30-89 ~]$ vmstat
+procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+ 0  0      0 222792   1060 647252    0    0     1     7   22   43  0  0 100  0  0
+
+
+			"To generate more detailed information about memory, event counters, and CPU scheduling statistics"
+
+
+[ec2-user@ip-172-31-30-89 ~]$ vmstat -s
+       988684 K total memory
+       117580 K used memory
+       226752 K active memory
+       395988 K inactive memory
+       222792 K free memory
+         1060 K buffer memory
+       647252 K swap cache
+            0 K total swap
+            0 K used swap
+            0 K free swap
+        13777 non-nice user cpu ticks
+          475 nice user cpu ticks
+         7444 system cpu ticks
+     26954530 idle cpu ticks
+         3417 IO-wait cpu ticks
+            0 IRQ cpu ticks
+          150 softirq cpu ticks
+         5110 stolen cpu ticks
+       234533 pages paged in
+      1870746 pages paged out
+            0 pages swapped in
+            0 pages swapped out
+      5917422 interrupts
+     11566750 CPU context switches
+   1645418177 boot time
+       129102 forks
+
+			"To get a timestamp along with a requested output"
+
+[ec2-user@ip-172-31-30-89 ~]$ vmstat -t
+procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu----- -----timestamp-----
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st                 UTC
+ 0  0      0 222792   1060 647252    0    0     1     7   22   43  0  0 100  0  0 2022-02-24 07:37:58
+
+
+
+3)  Find the process which is sleeping in "wait" state. 
+
+R – RUNNING/RUNNABLE
+S – INTERRRUPTABLE_SLEEP
+D – UNINTERRUPTABLE_SLEEP
+T – STOPPED
+Z – ZOMBIE
+
+[ec2-user@ip-172-31-30-89 ~]$ ls && sleep 2 && pwd
+bbc.sh  bbc.sh.save  files  linux_commands_practice  new_folder  state  tabs.sh  tabs.txt
+/home/ec2-user
+[ec2-user@ip-172-31-30-89 ~]$ ls && sleep 5 && pwd
+bbc.sh  bbc.sh.save  files  linux_commands_practice  new_folder  state  tabs.sh  tabs.txt
+/home/ec2-user
+
