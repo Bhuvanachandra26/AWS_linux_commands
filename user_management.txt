@@ -1,0 +1,28 @@
+1)  Create user "nikhil" with home directory set as "/home/nikhil"
+       a) nikhil user should have "/bin/sh" shell for his environment
+       b) His password should expire in 9 days and 2 days before password expiry, he should get warning. User account must expire in 1 month from creation date
+      c) Give him root privileges to start/stop cron daemon.
+
+
+to add user
+
+[ec2-user@ip-172-31-30-89 /]$ sudo useradd nikhil
+
+to create user with home directory
+
+[ec2-user@ip-172-31-30-89 /]$ sudo useradd  -m nikhil
+
+
+user expires in one month
+
+[ec2-user@ip-172-31-30-89 /]$ sudo useradd -m -e 2022-03-24 nikhil_2
+
+
+[ec2-user@ip-172-31-30-89 ~]$ sudo passwd
+Changing password for user root.
+New password:
+Retype new password:
+passwd: all authentication tokens updated successfully.
+
+
+[ec2-user@ip-172-31-30-89 ~]$ sudo useradd -m -K PASS_MAX_DAYS=9 -K PASS_WARN_AGE=2 -K LOGIN_RETRIES=3 nikhli_3
