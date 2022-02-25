@@ -1,0 +1,110 @@
+					file system management
+
+1)  List out 5 files in your system which consuming most of the disk space
+
+
+[ec2-user@ip-172-31-30-89 ~]$ du -a /home | sort -n -r | head -n 5
+du: cannot read directory ‘/home/bbc’: Permission denied
+du: cannot read directory ‘/home/bhuvana’: Permission denied
+du: cannot read directory ‘/home/nikhil’: Permission denied
+du: cannot read directory ‘/home/chandra’: Permission denied
+68      /home/ec2-user
+68      /home
+12      /home/ec2-user/.bbc.sh.swp
+8       /home/ec2-user/new_folder
+8       /home/ec2-user/linux_commands_practice
+
+
+2) Create one common folder in such way that anyone can create files inside that independently and should not be able to delete other users files from that common folder.
+
+
+[ec2-user@ip-172-31-30-89 ~]$ mkdir folder
+[ec2-user@ip-172-31-30-89 ~]$ ls
+files  folder  linux_commands_practice  new_folder  state  tabs.sh  tabs.txt
+
+
+[ec2-user@ip-172-31-30-89 ~]$ sudo useradd nikhil_1
+[ec2-user@ip-172-31-30-89 ~]$ sudo usermod -a -G adm nikhil_1
+[ec2-user@ip-172-31-30-89 ~]$ awk -F: '{ print $1}' /etc/passwd
+root
+bin
+daemon
+adm
+lp
+sync
+shutdown
+halt
+mail
+operator
+games
+ftp
+nobody
+systemd-network
+dbus
+rpc
+libstoragemgmt
+sshd
+rngd
+ec2-instance-connect
+postfix
+rpcuser
+nfsnobody
+chrony
+tcpdump
+ec2-user
+bbc
+bhuvana
+nikhil
+chandra
+nikhil_1
+
+3) Create user name "shubham" and add that user in the group "adm"
+      a) Create folder /data , change owner and group as  "root:adm
+      b) Change /data permission such a way that user can able to write data in this folder and ownership of files or folder which you creates in this folder should be same as parent folder i.e /data folder permission (root:adm)
+
+
+[ec2-user@ip-172-31-30-89 ~]$ sudo useradd shubham
+[ec2-user@ip-172-31-30-89 ~]$ sudo usermod -a -G adm shubham
+
+
+[ec2-user@ip-172-31-30-89 ~]$ mkdir commands
+[ec2-user@ip-172-31-30-89 ~]$ cd commands
+
+[ec2-user@ip-172-31-30-89 /]$ sudo chown root:adm files
+[ec2-user@ip-172-31-30-89 /]$ sudo chgrp adm files
+
+
+[ec2-user@ip-172-31-30-89 ~]$ sudo -i
+[root@ip-172-31-30-89 ~]# mkdir /data
+[root@ip-172-31-30-89 ~]# ll
+total 0
+
+[root@ip-172-31-30-89 ~]# cd /data
+[root@ip-172-31-30-89 data]# cd /
+
+[root@ip-172-31-30-89 /]# ls
+bin   data  etc   lib    local  mnt  proc  run   srv       sys  usr
+boot  dev   home  lib64  media  opt  root  sbin  swapfile  tmp  var
+
+[root@ip-172-31-30-89 /]# chown root:adm data
+[root@ip-172-31-30-89 /]# chmod 664 data
+
+[root@ip-172-31-30-89 /]# ll data
+total 0
+[root@ip-172-31-30-89 /]# ll data/
+total 0
+
+[root@ip-172-31-30-89 /]# cd data
+
+[root@ip-172-31-30-89 data]# touch text_1.txt
+
+[root@ip-172-31-30-89 data]# ll
+total 0
+-rw-r--r-- 1 root root 0 Feb 25 05:24 text_1.txt
+
+[root@ip-172-31-30-89 data]# chmod -R 664 text_1.txt
+[root@ip-172-31-30-89 data]# ll
+total 0
+-rw-rw-r-- 1 root root 0 Feb 25 05:24 text_1.txt
+
+[root@ip-172-31-30-89 data]# chmod root:adm text_1.txt
